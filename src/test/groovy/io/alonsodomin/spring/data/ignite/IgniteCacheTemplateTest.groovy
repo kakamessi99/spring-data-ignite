@@ -33,4 +33,13 @@ class IgniteCacheTemplateTest extends Specification {
             returnedValue == expectedValue
     }
 
+    void 'on clear then clear the undelying cache'() {
+        when:
+            igniteCacheTemplate.clear()
+
+        then:
+            1 * mockCache.clear()
+            0 * _
+    }
+
 }

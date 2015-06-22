@@ -7,4 +7,6 @@ public interface IgniteCacheOperations<T, ID> {
 
     T getById(ID id);
 
+    void clear();
+
 }

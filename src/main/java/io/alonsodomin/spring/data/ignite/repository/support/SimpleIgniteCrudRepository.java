@@ -70,6 +70,6 @@ public class SimpleIgniteCrudRepository<T, ID extends Serializable> implements I
 
     @Override
     public void deleteAll() {
-
+        igniteCacheOperations.clear();
     }
 }

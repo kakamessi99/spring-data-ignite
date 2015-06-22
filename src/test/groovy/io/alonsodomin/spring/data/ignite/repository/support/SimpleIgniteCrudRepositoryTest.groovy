@@ -38,6 +38,15 @@ class SimpleIgniteCrudRepositoryTest extends Specification {
             returnedEntity == expectedEntity
     }
 
+    void 'on deleteAll then clear the cache'() {
+        when:
+            simpleIgniteCrudRepository.deleteAll()
+
+        then:
+            1 * mockIgniteCacheOperations.clear()
+            0 * _
+    }
+
     @EqualsAndHashCode
     static class TestEntity {
 
