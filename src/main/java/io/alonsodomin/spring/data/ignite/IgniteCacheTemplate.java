@@ -23,6 +23,11 @@ public class IgniteCacheTemplate<T, ID extends Serializable> implements IgniteCa
     }
 
     @Override
+    public long count() {
+        return cache.size();
+    }
+
+    @Override
     public void clear() {
         cache.clear();
     }

@@ -50,7 +50,7 @@ public class SimpleIgniteCrudRepository<T, ID extends Serializable> implements I
 
     @Override
     public long count() {
-        return 0;
+        return igniteCacheOperations.count();
     }
 
     @Override

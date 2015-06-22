@@ -33,7 +33,22 @@ class IgniteCacheTemplateTest extends Specification {
             returnedValue == expectedValue
     }
 
-    void 'on clear then clear the undelying cache'() {
+    void 'on count return number of items in the cache'() {
+        given:
+            long expectedCount = 34
+
+        when:
+            long returnedCount = igniteCacheTemplate.count()
+
+        then:
+            1 * mockCache.size() >> expectedCount
+            0 * _
+
+        and:
+            returnedCount == expectedCount
+    }
+
+    void 'on clear then clear the underlying cache'() {
         when:
             igniteCacheTemplate.clear()
 

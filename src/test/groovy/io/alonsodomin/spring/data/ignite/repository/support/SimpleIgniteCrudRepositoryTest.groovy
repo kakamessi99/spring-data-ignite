@@ -38,6 +38,21 @@ class SimpleIgniteCrudRepositoryTest extends Specification {
             returnedEntity == expectedEntity
     }
 
+    void 'on count get the size of the underlying cache'() {
+        given:
+            long expectedCount = 32
+
+        when:
+            long returnedCount = simpleIgniteCrudRepository.count()
+
+        then:
+            1 * mockIgniteCacheOperations.count() >> expectedCount
+            0 * _
+
+        and:
+            returnedCount == expectedCount
+    }
+
     void 'on deleteAll then clear the cache'() {
         when:
             simpleIgniteCrudRepository.deleteAll()
