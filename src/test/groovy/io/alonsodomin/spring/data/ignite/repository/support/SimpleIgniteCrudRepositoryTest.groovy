@@ -38,6 +38,22 @@ class SimpleIgniteCrudRepositoryTest extends Specification {
             returnedEntity == expectedEntity
     }
 
+    void 'on exists delegate to the underlying operations implementation'() {
+        given:
+            String givenId = 'foo'
+            boolean expectedResult = true
+
+        when:
+            boolean returnedResult = simpleIgniteCrudRepository.exists(givenId)
+
+        then:
+            1 * mockIgniteCacheOperations.exists(givenId) >> expectedResult
+            0 * _
+
+        and:
+            returnedResult == expectedResult
+    }
+
     void 'on count get the size of the underlying cache'() {
         given:
             long expectedCount = 32

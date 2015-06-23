@@ -23,6 +23,10 @@ public class IgniteCacheTemplate<T, ID extends Serializable> implements IgniteCa
     }
 
     @Override
+    public boolean exists(ID id) {
+        return cache.containsKey(id);
+    }
+    @Override
     public long count() {
         return cache.size();
     }

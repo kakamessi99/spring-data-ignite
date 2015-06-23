@@ -33,6 +33,22 @@ class IgniteCacheTemplateTest extends Specification {
             returnedValue == expectedValue
     }
 
+    void 'on exists verify that the cache contains the given id'() {
+        given:
+            String givenId = 'foo'
+            boolean expectedResult = true
+
+        when:
+            boolean returnedResult = igniteCacheTemplate.exists(givenId)
+
+        then:
+            1 * mockCache.containsKey(givenId) >> expectedResult
+            0 * _
+
+        and:
+            returnedResult == expectedResult
+    }
+
     void 'on count return number of items in the cache'() {
         given:
             long expectedCount = 34

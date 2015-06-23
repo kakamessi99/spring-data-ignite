@@ -35,7 +35,7 @@ public class SimpleIgniteCrudRepository<T, ID extends Serializable> implements I
 
     @Override
     public boolean exists(ID id) {
-        return false;
+        return igniteCacheOperations.exists(id);
     }
 
     @Override
