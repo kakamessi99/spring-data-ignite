@@ -50,12 +50,12 @@ public class SimpleIgniteCrudRepository<T, ID extends Serializable> implements I
 
     @Override
     public Iterable<T> findAll() {
-        return null;
+        return igniteCacheOperations.fetchAll();
     }
 
     @Override
     public Iterable<T> findAll(Iterable<ID> ids) {
-        return null;
+        return igniteCacheOperations.fetch(ids);
     }
 
     @Override

@@ -76,6 +76,47 @@ class SimpleIgniteCrudRepositoryTest extends Specification {
             returnedEntities == entities
     }
 
+    void 'on findAll delegate to the underlying operations implementation'() {
+        given:
+            String givenId = 'foo'
+            TestEntity givenEntity = new TestEntity(id: givenId)
+
+        and:
+            List<TestEntity> expectedEntities = [ givenEntity ]
+
+        when:
+            Iterable<TestEntity> returnedEntities = simpleIgniteCrudRepository.findAll()
+
+        then:
+            1 * mockIgniteCacheOperations.fetchAll() >> expectedEntities
+            0 * _
+
+        and:
+            returnedEntities == expectedEntities
+    }
+
+    void 'on findAll with specific ids then perform a fetch in the underlying operations implementation'() {
+        given:
+            String givenId = 'foo'
+            TestEntity givenEntity = new TestEntity(id: givenId)
+
+        and:
+            List<String> idsToFetch = [ givenId ]
+
+        and:
+            List<TestEntity> expectedEntities = [ givenEntity ]
+
+        when:
+            Iterable<TestEntity> returnedEntities = simpleIgniteCrudRepository.findAll(idsToFetch)
+
+        then:
+            1 * mockIgniteCacheOperations.fetch(idsToFetch) >> expectedEntities
+            0 * _
+
+        and:
+            returnedEntities == expectedEntities
+    }
+
     void 'on exists delegate to the underlying operations implementation'() {
         given:
             String givenId = 'foo'

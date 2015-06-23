@@ -11,6 +11,10 @@ public interface IgniteCacheOperations<T, ID> {
 
     boolean exists(ID id);
 
+    Iterable<T> fetchAll();
+
+    Iterable<T> fetch(Iterable<? extends ID> ids);
+
     long count();
 
     void clear();

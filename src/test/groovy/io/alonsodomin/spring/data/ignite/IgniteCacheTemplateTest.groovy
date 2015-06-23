@@ -3,6 +3,9 @@ package io.alonsodomin.spring.data.ignite
 import org.apache.ignite.IgniteCache
 import spock.lang.Specification
 
+import javax.cache.Cache
+import java.util.function.Consumer
+
 /**
  * Created by domingueza on 22/06/15.
  */
@@ -31,6 +34,59 @@ class IgniteCacheTemplateTest extends Specification {
 
         and:
             returnedValue == expectedValue
+    }
+
+    void 'on fetchAll iterate the cache and build a list with the values'() {
+        given:
+            String givenValue = 'bar'
+
+        and:
+            List<String> expectedValues = [ givenValue ]
+
+        and:
+            Cache.Entry<String, String> expectedEntry = Mock(Cache.Entry)
+
+        when:
+            Iterable<String> returnedValues = igniteCacheTemplate.fetchAll()
+
+        then:
+            1 * mockCache.forEach(_ as Consumer) >> { args ->
+                Consumer<Cache.Entry<String, String>> consumer = args[0]
+                consumer.accept(expectedEntry)
+            }
+            1 * expectedEntry.value >> givenValue
+            0 * _
+
+        and:
+            returnedValues == expectedValues
+    }
+
+    void 'on fetch do a getAll in the cache and return the values of the returned map'() {
+        given:
+            String givenId = 'foo'
+            String givenValue = 'bar'
+
+        and:
+            Iterable<String> idsToLookUp = [ givenId ]
+            Map<String, String> mapToReturn = [ "${givenId}" : givenValue ]
+
+        and:
+            Iterable<String> expectedValues = [ givenValue ]
+
+        when:
+            Iterable<String> returnedValues = igniteCacheTemplate.fetch(idsToLookUp)
+
+        then:
+            1 * mockCache.getAll(_ as Set) >> { args ->
+                Set<String> valuesToFetch = args[0]
+                assert valuesToFetch.contains(givenId)
+
+                return mapToReturn
+            }
+            0 * _
+
+        and:
+            returnedValues.containsAll(expectedValues.toArray())
     }
 
     void 'on exists verify that the cache contains the given id'() {
