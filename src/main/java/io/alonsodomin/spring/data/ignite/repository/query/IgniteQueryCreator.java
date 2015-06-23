@@ -18,12 +18,8 @@ import java.util.Iterator;
 /**
  * Created by aalonsodominguez on 23/06/15.
  */
-public class IgniteQueryCreator<T, ID extends Serializable, R extends Cache.Entry<ID, T>>
-        extends AbstractQueryCreator<Query<R>, IgniteBiPredicate<ID, T>> {
-
-    private static <T, ID extends Serializable> IgniteBiPredicate<ID, T> noOp() {
-        return (id, obj) -> true;
-    }
+public class IgniteQueryCreator<T, ID extends Serializable>
+        extends AbstractQueryCreator<Query<Cache.Entry<ID, T>>, IgniteBiPredicate<ID, T>> {
 
     private final IgniteEntityInformation<T, ID> entityInformation;
 
@@ -50,8 +46,8 @@ public class IgniteQueryCreator<T, ID extends Serializable, R extends Cache.Entr
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Query<R> complete(IgniteBiPredicate<ID, T> criteria, Sort sort) {
-        return (Query<R>) new ScanQuery<>(criteria);
+    protected Query<Cache.Entry<ID, T>> complete(IgniteBiPredicate<ID, T> criteria, Sort sort) {
+        return new ScanQuery<>(criteria);
     }
 
     private IgniteBiPredicate<ID, T> createPredicate(Part part, Iterator<Object> iterator) {
