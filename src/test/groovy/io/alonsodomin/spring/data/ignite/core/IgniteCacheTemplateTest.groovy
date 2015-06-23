@@ -1,4 +1,4 @@
-package io.alonsodomin.spring.data.ignite
+package io.alonsodomin.spring.data.ignite.core
 
 import org.apache.ignite.IgniteCache
 import spock.lang.Specification

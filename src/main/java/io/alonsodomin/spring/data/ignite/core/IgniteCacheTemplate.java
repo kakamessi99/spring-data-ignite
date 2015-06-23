@@ -1,4 +1,4 @@
-package io.alonsodomin.spring.data.ignite;
+package io.alonsodomin.spring.data.ignite.core;
 
 import com.google.common.collect.Sets;
 import org.apache.ignite.IgniteCache;
