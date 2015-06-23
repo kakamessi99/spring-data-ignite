@@ -1,4 +1,4 @@
-package io.alonsodomin.spring.data.ignite.query;
+package io.alonsodomin.spring.data.ignite.repository.query;
 
 import org.springframework.data.repository.core.NamedQueries;
 import org.springframework.data.repository.core.RepositoryMetadata;

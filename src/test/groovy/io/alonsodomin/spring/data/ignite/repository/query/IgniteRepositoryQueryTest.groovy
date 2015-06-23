@@ -1,4 +1,4 @@
-package io.alonsodomin.spring.data.ignite.query
+package io.alonsodomin.spring.data.ignite.repository.query
 
 import io.alonsodomin.spring.data.ignite.core.IgniteCacheOperations
 import io.alonsodomin.spring.data.ignite.test.TestEntity
@@ -8,9 +8,9 @@ import spock.lang.Specification
 /**
  * Created by aalonsodominguez on 23/06/15.
  */
-class IgniteQueryTest extends Specification {
+class IgniteRepositoryQueryTest extends Specification {
 
-    IgniteQuery<TestEntity, String> igniteQuery
+    IgniteRepositoryQuery<TestEntity, String> igniteQuery
 
     IgniteCacheOperations<TestEntity, String> mockCacheOperations
     IgniteQueryMethod<TestEntity, String> mockQueryMethod
@@ -19,7 +19,7 @@ class IgniteQueryTest extends Specification {
         mockCacheOperations = Mock(IgniteCacheOperations)
         mockQueryMethod = Mock(IgniteQueryMethod)
 
-        igniteQuery = new IgniteQuery<>(mockCacheOperations, mockQueryMethod)
+        igniteQuery = new IgniteRepositoryQuery<>(mockCacheOperations, mockQueryMethod)
     }
 
     void 'on getQueryMethod return the query method used in the constructor'() {

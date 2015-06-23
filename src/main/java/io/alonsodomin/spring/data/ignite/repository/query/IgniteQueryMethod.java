@@ -1,4 +1,4 @@
-package io.alonsodomin.spring.data.ignite.query;
+package io.alonsodomin.spring.data.ignite.repository.query;
 
 import io.alonsodomin.spring.data.ignite.core.IgniteEntityMetadataSupport;
 import org.springframework.data.repository.core.EntityMetadata;
