@@ -133,6 +133,50 @@ class SimpleIgniteCrudRepositoryTest extends Specification {
             returnedResult == expectedResult
     }
 
+    void 'on delete by id delegate to the underlying cache'() {
+        given:
+            String givenId = 'foo'
+
+        when:
+            simpleIgniteCrudRepository.delete(givenId)
+
+        then:
+            1 * mockIgniteCacheOperations.remove(givenId)
+            0 * _
+    }
+
+    void 'on delete entity read the ID and delegate to the underlying cache'() {
+        given:
+            String givenId = 'foo'
+            TestEntity givenEntity = new TestEntity(id: givenId)
+
+        when:
+            simpleIgniteCrudRepository.delete(givenEntity)
+
+        then:
+            1 * mockIgniteEntityInformation.getId(givenEntity) >> givenId
+            1 * mockIgniteCacheOperations.remove(givenId)
+            0 * _
+    }
+
+    void 'on delete all given entities map them to ids and delegate to the underlying cache'() {
+        given:
+            String givenId = 'foo'
+            TestEntity givenEntity = new TestEntity(id: givenId)
+            List<TestEntity> entitiesToDelete = [ givenEntity ]
+
+        when:
+            simpleIgniteCrudRepository.delete((Iterable<TestEntity>) entitiesToDelete)
+
+        then:
+            1 * mockIgniteEntityInformation.getId(givenEntity) >> givenId
+            1 * mockIgniteCacheOperations.remove(_ as Set) >> { args ->
+                Set<String> idsToDelete = args[0]
+                assert idsToDelete.contains(givenId)
+            }
+            0 * _
+    }
+
     void 'on count get the size of the underlying cache'() {
         given:
             long expectedCount = 32

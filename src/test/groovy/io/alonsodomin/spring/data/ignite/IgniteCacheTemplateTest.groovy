@@ -129,6 +129,35 @@ class IgniteCacheTemplateTest extends Specification {
             0 * _
     }
 
+    void 'on remove by id remove the item from the cache and return the old value'() {
+        given:
+            String givenId = 'foo'
+            String expectedValue = 'bar'
+
+        when:
+            String returnedOldValue = igniteCacheTemplate.remove(givenId)
+
+        then:
+            1 * mockCache.getAndRemove(givenId) >> expectedValue
+            0 * _
+
+        and:
+            returnedOldValue == expectedValue
+    }
+
+    void 'on remove a list of ids delegate the remove operation to the cache'() {
+        given:
+            String givenId = 'foo'
+            Set<String> idsToRemove = [ givenId ]
+
+        when:
+            igniteCacheTemplate.remove((Set<String>) idsToRemove)
+
+        then:
+            1 * mockCache.removeAll(idsToRemove)
+            0 * _
+    }
+
     void 'on save add the item to the cache'() {
         given:
             String givenId = 'foo'

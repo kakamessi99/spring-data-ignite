@@ -1,10 +1,13 @@
 package io.alonsodomin.spring.data.ignite.repository.support;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import io.alonsodomin.spring.data.ignite.IgniteCacheOperations;
 import io.alonsodomin.spring.data.ignite.repository.IgniteCrudRepository;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.StreamSupport;
 
@@ -65,17 +68,19 @@ public class SimpleIgniteCrudRepository<T, ID extends Serializable> implements I
 
     @Override
     public void delete(ID id) {
-
+        igniteCacheOperations.remove(id);
     }
 
     @Override
     public void delete(T entity) {
-
+        ID id = entityInformation.getId(entity);
+        igniteCacheOperations.remove(id);
     }
 
     @Override
     public void delete(Iterable<? extends T> entities) {
-
+        Set<ID> idsToDelete = Sets.newHashSet(Iterables.transform(entities, entityInformation::getId));
+        igniteCacheOperations.remove(idsToDelete);
     }
 
     @Override

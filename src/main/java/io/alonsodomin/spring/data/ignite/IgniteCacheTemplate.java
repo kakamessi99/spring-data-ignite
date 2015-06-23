@@ -57,6 +57,16 @@ public class IgniteCacheTemplate<T, ID extends Serializable> implements IgniteCa
     }
 
     @Override
+    public T remove(ID id) {
+        return cache.getAndRemove(id);
+    }
+
+    @Override
+    public void remove(Set<? extends ID> ids) {
+        cache.removeAll(ids);
+    }
+
+    @Override
     public T save(ID id, T newValue) {
         return cache.getAndPut(id, newValue);
     }
