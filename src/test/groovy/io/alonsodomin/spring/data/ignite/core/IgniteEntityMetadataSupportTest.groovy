@@ -1,4 +1,4 @@
-package io.alonsodomin.spring.data.ignite.repository.support
+package io.alonsodomin.spring.data.ignite.core
 
 import io.alonsodomin.spring.data.ignite.test.TestEntity
 import spock.lang.Specification
@@ -6,12 +6,12 @@ import spock.lang.Specification
 /**
  * Created by domingueza on 22/06/15.
  */
-class IgniteEntityMetadataTest extends Specification {
+class IgniteEntityMetadataSupportTest extends Specification {
 
-    IgniteEntityMetadata<TestEntity, String> entityMetadata
+    IgniteEntityMetadataSupport<TestEntity, String> entityMetadata
 
     void setup() {
-        entityMetadata = new IgniteEntityMetadata(TestEntity)
+        entityMetadata = new IgniteEntityMetadataSupport(TestEntity)
     }
 
     void 'on getIdType return the type of the @Id field'() {

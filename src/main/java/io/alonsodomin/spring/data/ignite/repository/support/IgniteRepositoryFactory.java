@@ -1,5 +1,6 @@
 package io.alonsodomin.spring.data.ignite.repository.support;
 
+import io.alonsodomin.spring.data.ignite.core.IgniteEntityMetadataSupport;
 import org.springframework.data.repository.core.EntityInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
@@ -13,7 +14,7 @@ public class IgniteRepositoryFactory extends RepositoryFactorySupport {
 
     @Override
     public <T, ID extends Serializable> EntityInformation<T, ID> getEntityInformation(Class<T> domainClass) {
-        return new IgniteEntityMetadata<>(domainClass);
+        return new IgniteEntityMetadataSupport<>(domainClass);
     }
 
     @Override

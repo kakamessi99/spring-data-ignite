@@ -1,4 +1,4 @@
-package io.alonsodomin.spring.data.ignite.repository.support;
+package io.alonsodomin.spring.data.ignite.core;
 
 import org.springframework.data.repository.core.EntityInformation;
 

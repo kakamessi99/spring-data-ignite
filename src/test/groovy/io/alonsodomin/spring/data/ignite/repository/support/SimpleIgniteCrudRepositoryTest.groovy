@@ -1,6 +1,7 @@
 package io.alonsodomin.spring.data.ignite.repository.support
 
 import io.alonsodomin.spring.data.ignite.core.IgniteCacheOperations
+import io.alonsodomin.spring.data.ignite.core.IgniteEntityInformation
 import io.alonsodomin.spring.data.ignite.test.TestEntity
 import spock.lang.Specification
 

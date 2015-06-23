@@ -3,6 +3,7 @@ package io.alonsodomin.spring.data.ignite.repository.support;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import io.alonsodomin.spring.data.ignite.core.IgniteCacheOperations;
+import io.alonsodomin.spring.data.ignite.core.IgniteEntityInformation;
 import io.alonsodomin.spring.data.ignite.repository.IgniteCrudRepository;
 
 import java.io.Serializable;

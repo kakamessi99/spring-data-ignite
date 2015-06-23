@@ -1,4 +1,4 @@
-package io.alonsodomin.spring.data.ignite.repository.support;
+package io.alonsodomin.spring.data.ignite.core;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.repository.core.support.AbstractEntityInformation;
@@ -12,14 +12,14 @@ import java.lang.reflect.Method;
 /**
  * Created by domingueza on 22/06/15.
  */
-public class IgniteEntityMetadata<T, ID extends Serializable>
+public class IgniteEntityMetadataSupport<T, ID extends Serializable>
         extends AbstractEntityInformation<T, ID>
         implements IgniteEntityInformation<T, ID> {
 
     private Method idGetterMethod;
     private Field idField;
 
-    public IgniteEntityMetadata(Class<T> domainClass) {
+    public IgniteEntityMetadataSupport(Class<T> domainClass) {
         super(domainClass);
 
         ReflectionUtils.doWithMethods(domainClass, method -> {
