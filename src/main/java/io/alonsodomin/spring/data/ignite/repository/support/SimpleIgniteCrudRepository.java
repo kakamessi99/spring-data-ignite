@@ -35,7 +35,7 @@ public class SimpleIgniteCrudRepository<T, ID extends Serializable> implements I
 
     @Override
     public <S extends T> Iterable<S> save(Iterable<S> entities) {
-        Map<ID, T> entityMap = StreamSupport.stream(entities.spliterator(), false)
+        Map<ID, S> entityMap = StreamSupport.stream(entities.spliterator(), false)
                 .collect(toMap(entityInformation::getId, Function.identity()));
         igniteCacheOperations.save(entityMap);
         return entities;

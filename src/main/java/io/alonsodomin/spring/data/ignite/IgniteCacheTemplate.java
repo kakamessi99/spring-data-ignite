@@ -72,7 +72,7 @@ public class IgniteCacheTemplate<T, ID extends Serializable> implements IgniteCa
     }
 
     @Override
-    public void save(Map<ID, T> values) {
+    public void save(Map<? extends ID, ? extends T> values) {
         cache.putAll(values);
     }
 }

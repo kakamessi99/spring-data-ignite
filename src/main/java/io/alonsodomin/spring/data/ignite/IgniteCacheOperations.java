@@ -26,6 +26,6 @@ public interface IgniteCacheOperations<T, ID> {
 
     T save(ID id, T newValue);
 
-    void save(Map<ID, T> values);
+    void save(Map<? extends ID, ? extends T> values);
 
 }
