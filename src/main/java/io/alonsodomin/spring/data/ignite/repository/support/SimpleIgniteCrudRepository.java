@@ -4,6 +4,11 @@ import io.alonsodomin.spring.data.ignite.IgniteCacheOperations;
 import io.alonsodomin.spring.data.ignite.repository.IgniteCrudRepository;
 
 import java.io.Serializable;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.StreamSupport;
+
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Created by domingueza on 22/06/15.
@@ -20,12 +25,17 @@ public class SimpleIgniteCrudRepository<T, ID extends Serializable> implements I
 
     @Override
     public <S extends T> S save(S entity) {
-        return null;
+        ID entityId = entityInformation.getId(entity);
+        igniteCacheOperations.save(entityId, entity);
+        return entity;
     }
 
     @Override
     public <S extends T> Iterable<S> save(Iterable<S> entities) {
-        return null;
+        Map<ID, T> entityMap = StreamSupport.stream(entities.spliterator(), false)
+                .collect(toMap(entityInformation::getId, Function.identity()));
+        igniteCacheOperations.save(entityMap);
+        return entities;
     }
 
     @Override

@@ -1,6 +1,6 @@
 package io.alonsodomin.spring.data.ignite.repository.support
 
-import org.springframework.data.annotation.Id
+import io.alonsodomin.spring.data.ignite.test.TestEntity
 import spock.lang.Specification
 
 /**
@@ -32,13 +32,6 @@ class IgniteEntityMetadataTest extends Specification {
 
         then:
             returnedId == expectedId
-    }
-
-    static class TestEntity {
-
-        @Id
-        String id
-
     }
 
 }

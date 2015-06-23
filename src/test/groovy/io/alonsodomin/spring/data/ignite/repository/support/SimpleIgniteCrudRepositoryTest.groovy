@@ -1,8 +1,7 @@
 package io.alonsodomin.spring.data.ignite.repository.support
 
-import groovy.transform.EqualsAndHashCode
 import io.alonsodomin.spring.data.ignite.IgniteCacheOperations
-import org.springframework.data.annotation.Id
+import io.alonsodomin.spring.data.ignite.test.TestEntity
 import spock.lang.Specification
 
 /**
@@ -36,6 +35,45 @@ class SimpleIgniteCrudRepositoryTest extends Specification {
 
         and:
             returnedEntity == expectedEntity
+    }
+
+    void 'on save delegate the the underlying operations implementation'() {
+        given:
+            String givenId = 'foo'
+            TestEntity newEntity = new TestEntity(id: givenId)
+            TestEntity expectedOldEntity = new TestEntity(id: givenId)
+
+        when:
+            TestEntity returnedEntity = simpleIgniteCrudRepository.save(newEntity)
+
+        then:
+            1 * mockIgniteEntityInformation.getId(newEntity) >> givenId
+            1 * mockIgniteCacheOperations.save(givenId, newEntity) >> expectedOldEntity
+            0 * _
+
+        and:
+            returnedEntity == newEntity
+    }
+
+    void 'on save an iterable then delegate to the save map operation'() {
+        given:
+            String givenId = 'foo'
+            TestEntity newEntity = new TestEntity(id: givenId)
+            List<TestEntity> entities = [ newEntity ]
+
+        when:
+            Iterable<TestEntity> returnedEntities = simpleIgniteCrudRepository.save(entities)
+
+        then:
+            1 * mockIgniteEntityInformation.getId(newEntity) >> givenId
+            1 * mockIgniteCacheOperations.save(_ as Map) >> { args ->
+                Map<String, TestEntity> mapArg = (Map) args[0]
+                assert mapArg.get(givenId) == newEntity
+            }
+            0 * _
+
+        and:
+            returnedEntities == entities
     }
 
     void 'on exists delegate to the underlying operations implementation'() {
@@ -76,14 +114,6 @@ class SimpleIgniteCrudRepositoryTest extends Specification {
         then:
             1 * mockIgniteCacheOperations.clear()
             0 * _
-    }
-
-    @EqualsAndHashCode
-    static class TestEntity {
-
-        @Id
-        String id
-
     }
 
 }

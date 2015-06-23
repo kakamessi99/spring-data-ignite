@@ -73,4 +73,35 @@ class IgniteCacheTemplateTest extends Specification {
             0 * _
     }
 
+    void 'on save add the item to the cache'() {
+        given:
+            String givenId = 'foo'
+            String givenValue = 'bar'
+            String expectedOldValue = 'old'
+
+        when:
+            String returnedOldValue = igniteCacheTemplate.save(givenId, givenValue)
+
+        then:
+            1 * mockCache.getAndPut(givenId, givenValue) >> expectedOldValue
+            0 * _
+
+        and:
+            returnedOldValue == expectedOldValue
+    }
+
+    void 'on save map perform a putAll in the underlying cache'() {
+        given:
+            String givenId = 'foo'
+            String givenValue = 'bar'
+            Map<String, String> valuesToSave = [ "${givenId}" : givenValue ]
+
+        when:
+            igniteCacheTemplate.save(valuesToSave)
+
+        then:
+            1 * mockCache.putAll(valuesToSave)
+            0 * _
+    }
+
 }
